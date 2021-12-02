@@ -97,6 +97,8 @@ The user interface was made in Next Js, an React Js framework.
 
 ## Folder structure
 
+**The frontend of the application was made inside the folder called `interface/`**.
+
 The project is organized respecting the framework folder structure pattern **Next js**. In the `/pages` folder are the files that define a page. The name of the folder that holds this file defines a route. For example, inside the `/pages` directory we have the folder `/Phosphorus`, and inside this folder we have an `index.js` file, the route to access the page in the browser will then be `https://site_domain/Phosphorus` . Pages outside the `/pages` directory are not found by the Next Js engine.
 
 <img src="docs/estrutura_paginas.png" />
