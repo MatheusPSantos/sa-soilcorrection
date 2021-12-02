@@ -5,13 +5,13 @@ Interface da aplicação de correção de solo desenvolvida utilizando o framewo
 
 O projeto está organizado respeitando o padrão de estrutura de pastas do framework **Next js**. Na pasta `/pages` estão os arquivos que definem uma página. O nome da pasta que guarda esse arquivo é que define uma rota. Por exemplo, dentro do diretório `/pages` temos a pasta `/Fosforo`, e dentro desta pasta temos um arquivo `index.js`, a rota para acessar a página no navegador será então `https://domínio_do_site/Fosforo`. Páginas fora do diretório `/pages` não são encontradas pela engine do Next Js.
 
-<img src="docs/estrutura_paginas.png" />
+<img src="../docs/estrutura_paginas.png" />
 
 O arquivo `_app.js` é responsável por guardar o código que será lido em tempo de renderização pelo Next Js. Nele é possível definir informações que serão usadas dentro de todas as outras páginas do site. O arquivo `index.js` é o ponto de partida do site e é representado pela rota raiz `https://dominio_do_site/`.    
 
 Dentro da pasta `/components` são guardados os códigos relacionados à componentes da interface do usuário (UI) e que podem ser utilzados em diferentes trechos por diferentes arquivos de página. Os componentes são definidos a partir do uso da biblioteca de estilização e componentização `styled-components`.
 
-<img src="docs/relacao_componente_pagina.png" />
+<img src="../docs/relacao_componente_pagina.png" />
 
 ## Assets e arquivos public
 
