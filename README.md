@@ -95,6 +95,20 @@ Response preview:
 
 The user interface was made in Next Js, an React Js framework.
 
+Here are some examples of use:
+
+> Using Phosphorus interface
+
+<img src="docs/exemplo-fosforo.gif"/>
+
+> Using Potassium interface
+
+<img src="docs/exemplo-potassio.gif"/>
+
+> Using Magnesium and Calcium interface
+
+<img src="docs/exemplo-calciomagnesio.gif"/>
+
 ## Folder structure
 
 **The frontend of the application was made inside the folder called `interface/`**.
