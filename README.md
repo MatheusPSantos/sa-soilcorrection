@@ -90,6 +90,80 @@ Response preview:
   "quantidade_aplicar": 1.842857142857143
 }
 ```
+
+## User Interface
+
+The user interface was made in Next Js, an React Js framework.
+
+## Folder structure
+
+**The frontend of the application was made inside the folder called `interface/`**.
+
+The project is organized respecting the framework folder structure pattern **Next js**. In the `/pages` folder are the files that define a page. The name of the folder that holds this file defines a route. For example, inside the `/pages` directory we have the folder `/Phosphorus`, and inside this folder we have an `index.js` file, the route to access the page in the browser will then be `https://site_domain/Phosphorus` . Pages outside the `/pages` directory are not found by the Next Js engine.
+
+<img src="docs/estrutura_paginas.png" />
+
+The `_app.js` file is responsible for storing the code that will be read at render time by Next Js. It is possible to define information that will be used within all other pages of the site. The `index.js` file is the starting point of the site and is represented by the root route `https://site_domain/`.
+
+Inside the `/components` folder are stored codes related to user interface (UI) components that can be used in different parts by different page files. Components are defined using the `styled-components` styling and componentization library.
+
+<img src="docs/relacao_componente_pagina.png" />
+
+## Assets and public files
+
+Next JS understands that the `public` folder holds files that can be referenced within any page, regardless of the nesting routes they are on. So it is possible to declare the use of an image just using the name of the image itself:
+
+```html
+<!-- Sem public -->
+<img src="caminho/ate/a/imagem/nome_da_imagem.png" />
+
+<!-- com public -->
+<img src="nome_da_imagem_que_esta_na_pasta_public.png" />
+
+```
+### Usage and build
+
+To use the project, the computer must have a version of NodeJs installed. After cloning the repository, navigate to the project's root folder and run the following command to install the dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+After installing the dependencies, it will be possible to run the project in development mode, just use the following commands:
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+To `build` the application, just use the command:
+
+```bash 
+yarn build
+# or
+npm run build
+```
+
+And to run the application in production:
+```bash 
+yarn start
+# or
+npm start
+```
+The project's default url is [http://localhost:3000](http://localhost:3000), you can access it by browser and start using the application.
+### Tests
+
+The project uses the open source library `Cypress` to perform interface testing, integration, among others. The library can be found at [https://docs.cypress.io/guides/overview/why-cypress/](https://docs.cypress.io/guides/overview/why-cypress/).
+
+To run the tests in a local environment, you need to run the following commands in the terminal:
+```bash
+yarn run test
+```
+This command `build` the project and after that executes it. Right after that, the same command runs the native cypress command `cypress open` which in turn opens the Cypress development environment to perform the tests on url `http://localhost:8080`.
+
+When opening the URL, a window with written tests will be shown, the user can click on one of them to see the test results.
+
 ## PROGRESS
 
 Checkout published releases to follow the project progress.
