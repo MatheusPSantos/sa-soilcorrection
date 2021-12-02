@@ -1,195 +1,131 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { Card } from '../../components/Card';
-import { Header } from '../../components/Header';
-import { Input, InputField } from '../../components/Input';
-import { AiOutlineArrowLeft } from 'react-icons/ai';
+import {Card} from '../../components/Card';
+import {Header} from '../../components/Header';
+import {Input, InputField} from '../../components/Input';
+import {AiOutlineArrowLeft} from 'react-icons/ai';
 import styles from '../../styles/Home.module.css'
+import {useState} from "react";
+import {somenteNumero} from "../../services/InputValidador";
+import {ButtonSubmit} from "../../components/Button";
+import {calcularCorrecaoDeCalcioMagnesio} from "../../services/CorrecaoCalcioMagnesio";
 
 export default function CalcioMagnesio() {
 
-  const fontesDeCalcioMagnesio = [
-    { "indice": 1, "fonte": "Calcário Dolomítico" },
-    { "indice": 2, "fonte": "Calcário Calcítico" },
-    { "indice": 3, "fonte": "Calcário de Concha" },
-    { "indice": 4, "fonte": "Gesso Agrícola" },
-    { "indice": 5, "fonte": "Hidróxido de cálcio" },
-    { "indice": 6, "fonte": "Calcário Magnesiano" }
-  ];
+    const fontesDeCalcioMagnesio = [
+        {"indice": 1, "fonte": "Calcário Dolomítico"},
+        {"indice": 2, "fonte": "Calcário Calcítico"},
+        {"indice": 3, "fonte": "Calcário de Concha"},
+        {"indice": 4, "fonte": "Gesso Agrícola"},
+        {"indice": 5, "fonte": "Hidróxido de cálcio"},
+        {"indice": 6, "fonte": "Calcário Magnesiano"}
+    ];
 
-  return <>
-    <Head>
-      <title>Equilíbrio e Correção de Cálcio e Magnésio</title>
-    </Head>
-
-    <Header>
-      <Link href="/"><a><AiOutlineArrowLeft /></a></Link>
-      <span>Equilíbrio e correção de solo</span>
-    </Header>
-
-    <div className={styles.container} >
+    const [quantidadeAplicar, setQuantidadeAplicar] = useState();
+    const [requestOK, setRequestOK] = useState(false);
+    const [quantidadeFonte, setQuantidadeFonte] = useState();
+    const [prntPercentagem, setPRNTPercentagem] = useState();
+    const [fonteCorretivo, setFonteCorretivo] = useState("1");
 
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Correção/Recuperção de Cálcio e Magnésio
-        </h1>
+    async function handleSubmit(e) {
+        e.preventDefault();
 
-        <section style={{ marginTop: "50px" }} className="row w-800">
-          <Card className="w-350">
-            <h2>Cálcio</h2>
-            <div className="col w-full">
-              <div>
-                <InputField className="w-full">
-                  <label>Participação atual no CTC do solo (%): </label>
-                  <Input
-                    id=""
-                    name=""
-                    type="text"
-                    placeholder="0,0%"
-                  />
-                </InputField>
-              </div>
-              <div className="col">
-                <InputField className="w-full">
-                  <label>Participação ideal na CTC (%): </label>
-                  <Input
-                    type="text"
-                    placeholder="45,0% a 55,0%"
-                    name=""
-                    id=""
-                    disabled
-                  />
-                </InputField>
-              </div>
-              <div className="col">
-                <InputField className="w-full">
-                  <label>Participação após a correção (%): </label>
-                  <Input
-                    id=""
-                    name=""
-                    type="text"
-                    placeholder="0,0%"
-                  />
-                </InputField>
-                <InputField className="">
-                  <label>Participação na CTC, desejada (%): </label>
-                  <Input
-                    id=""
-                    name=""
-                    type="text"
-                    placeholder="0,0%"
-                  />
-                </InputField>
-              </div>
-            </div>
-          </Card>
+        const response = await calcularCorrecaoDeCalcioMagnesio(
+            prntPercentagem.trim(),
+            quantidadeFonte.trim(),
+            fonteCorretivo
+            );
 
-          <Card className="w-350">
-            <h2>Magnésio</h2>
-            <div className="col w-full">
-              <InputField className="w-full">
-                <label>Participação atual na CTC do solo (%):</label>
-                <Input
-                  type="text"
-                  placeholder="0,0%"
-                  name=""
-                  id=""
-                />
-              </InputField>
+        if(response.status === 200) {
+            setRequestOK(true);
+            const {data} = response;
 
-              <InputField className="w-full">
-                <label>Participação ideal na CTC do solo (%):</label>
-                <Input
-                  type="text"
-                  placeholder="10% a 15%"
-                  name=""
-                  id=""
-                  disabled
-                />
-              </InputField>
+            setQuantidadeAplicar(data.quantidade_aplicar)
 
-              <InputField className="w-full">
-                <label>Participação após correção (%):</label>
-                <Input
-                  type="text"
-                  placeholder="0,0%"
-                  name=""
-                  id=""
-                />
-              </InputField>
-            </div>
-          </Card>
-        </section>
+        } else {
+            window.alert("Ocorreu um erro com a requisição.");
+        }
+    }
 
-        <section className="row w-800">
-          <Card className="row">
-            <div className="col w-350">
-              <InputField className="w-300">
-                <label>Fonte de Corretivo a usar:</label>
-                <select
-                  style={{ height: "30px" }}
-                >
-                  {fontesDeCalcioMagnesio.map((fonte, index) => {
-                    return <option key={index}>{fonte.indice} - {fonte.fonte}</option>
-                  })}
-                </select>
-              </InputField>
+    return <>
+        <Head>
+            <title>Equilíbrio e Correção de Cálcio e Magnésio</title>
+        </Head>
 
-              <InputField className="w-full">
-                <label>PRNT (%):</label>
-                <Input
-                  type="text"
-                  disabled
-                />
-              </InputField>
+        <Header>
+            <Link href="/"><a><AiOutlineArrowLeft/></a></Link>
+            <span>Equilíbrio e correção de solo</span>
+        </Header>
 
-              <InputField className="w-full">
-                <label>Teor de CaO do corretivo (%):</label>
-                <Input type="text" disabled />
-              </InputField>
+        <div className={styles.container}>
+            <main className={styles.main}>
+                <h1 className={styles.title}>
+                    Correção/Recuperção de Cálcio e Magnésio
+                </h1>
 
-              <InputField className="w-full">
-                <label>Quantidade a aplicar (Ton./ha):</label>
-                <Input type="text" name="" id="" />
-              </InputField>
+                <section style={{marginTop: "50px"}} className="row w-800">
+                    <Card className="w-full">
+                        <h2>Cálcio e Magnésio</h2>
+                        <div className="col w-full">
+                            <Card className="row">
+                                <div className="col w-350">
+                                    <InputField className="w-300">
+                                        <label>Fonte de Corretivo a usar:</label>
+                                        <select
+                                            value={fonteCorretivo} onChange={(e) => setFonteCorretivo(e.target.value.split("-")[0].trim())}
+                                            style={{height: "30px"}}
+                                        >
+                                            {fontesDeCalcioMagnesio.map((fonte, index) => {
+                                                return <option value={index + 1}
+                                                               key={index}>{fonte.indice} - {fonte.fonte}</option>
+                                            })}
+                                        </select>
+                                    </InputField>
 
-              <InputField className="w-full">
-                <label>Custo (R$/ha):</label>
-                <Input type="text" disabled name="" id="" />
-              </InputField>
-            </div>
+                                    <InputField className="w-full">
+                                        <label>PRNT (%):</label>
+                                        <Input
+                                            value={prntPercentagem}
+                                            onChange={(e) => setPRNTPercentagem(e.target.value)}
+                                            onKeyPress={(e) => somenteNumero(e)}
+                                            type="text"
+                                        />
+                                    </InputField>
 
-            <div className="col w-350">
-              <h3>V%</h3>
-              <InputField>
-                <label>Atual</label>
-                <Input
-                  type="text"
-                  placeholder="0%"
-                />
-              </InputField>
+                                    <InputField className="w-full">
+                                        <label>Quantidade da fonte a utilizar:</label>
+                                        <Input type="text"
+                                               value={quantidadeFonte}
+                                               onKeyPress={(e) => somenteNumero(e)}
+                                               onChange={(e) => setQuantidadeFonte(e.target.value)}
+                                        />
+                                    </InputField>
+                                </div>
+                            </Card>
+                        </div>
 
-              <InputField>
-                <label>Ideal</label>
-                <Input
-                  type="text"
-                  placeholder="60% a 70%"
-                  disabled
-                />
-              </InputField>
+                        <ButtonSubmit
+                            type={"button"}
+                            value={"Calcular"}
+                            onClick={(e) => handleSubmit(e)}
+                        />
+                    </Card>
+                </section>
 
-              <InputField>
-                <label>Após a correção</label>
-                <Input
-                  type="text"
-                  placeholder="0%"
-                />
-              </InputField>
-            </div>
-          </Card>
-        </section>
-      </main>
-    </div>
-  </>;
+                <section>
+                    { requestOK ?
+                        <div className={styles.container}>
+                            <div className="col">
+                                <p style={{fontWeight: "bold"}}>Quantidade a aplicar (kg/hectare):</p>
+                                <h3 style={{color: "green"}}>{quantidadeAplicar}</h3>
+                            </div>
+                        </div>
+                        : <></>
+                    }
+                </section>
+            </main>
+        </div>
+    </>
+;
 }
