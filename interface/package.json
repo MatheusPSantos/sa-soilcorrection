@@ -10,6 +10,7 @@
     "test": "yarn build & yarn start | cypress open"
   },
   "dependencies": {
+    "axios": "^0.24.0",
     "cypress": "^8.7.0",
     "next": "12.0.0",
     "react": "17.0.2",

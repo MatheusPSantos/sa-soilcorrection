@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const ButtonSubmit = styled.input`
     border: 1px solid #0e90ed;
+    color: #0e90ed;
     border-radius: 5px;
     margin: 5px;
     padding: 10px 25px;
@@ -9,7 +10,8 @@ export const ButtonSubmit = styled.input`
 
     &:hover {
         cursor: pointer;
-        color: #0e90ed
+        color: white;
+        background: #0e90ed;
     }
 `;
 

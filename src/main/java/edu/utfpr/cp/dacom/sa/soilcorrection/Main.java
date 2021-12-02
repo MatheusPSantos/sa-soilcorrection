@@ -7,7 +7,9 @@ import io.javalin.Javalin;
 
 public class Main {
     public static void main(String[] args) {
-        Javalin app = Javalin.create().start(8080);
+        Javalin app = Javalin.create(config -> {
+            config.enableCorsForAllOrigins();
+        }).start(8080);
         app.get("/fosforo", FosforoController::calcularCorrecao);
         app.get("/potassio", PotassioController::calcularQuantidadeAAplicar);
         app.get("/calcio_magnesio", CalcioMagnesioController::calcularCorrecao);

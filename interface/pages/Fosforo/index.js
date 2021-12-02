@@ -4,6 +4,10 @@ import { Header } from '../../components/Header';
 import { Input, InputField } from '../../components/Input'
 import {AiOutlineArrowLeft} from 'react-icons/ai'
 import styles from '../../styles/Home.module.css'
+import { calcularCorrecaoDeFosforo } from '../../services/CorrecaoFosforo';
+import {somenteNumero} from "../../services/InputValidador";
+import {useEffect, useState} from "react";
+import {ButtonSubmit} from "../../components/Button";
 
 export default function Fosforo() {
 
@@ -21,6 +25,25 @@ export default function Fosforo() {
     { "indice": 11, "fonte": "Ácido Fosfórico" },
     { "indice": 12, "fonte": "Multif.Magnesiano" }
   ];
+
+  const [teorFosforo, setTeorFosforo] = useState(0);
+  const [fonteFosforo, setFonteFosforo] = useState("1");
+  const [requestOk, setRequestOK] = useState(false);
+
+  const [eficiencia, setEficiencia] = useState();
+  const [quantidadeAplicar, setQuantidadeAplicar] = useState();
+
+  async function handleRequest(event) {
+    event.preventDefault();
+    const response = await calcularCorrecaoDeFosforo(teorFosforo.trim(), fonteFosforo.trim());
+    if(response.status === 200) {
+      setRequestOK(true);
+      setQuantidadeAplicar(response.data.quantidade_aplicar);
+      setEficiencia(response.data.eficiencia_nutriente);
+    } else {
+      window.alert("Houve um erro com a requisição.");
+    }
+  }
 
   return <>
     <Head>
@@ -44,39 +67,23 @@ export default function Fosforo() {
               <InputField className="w-300">
                 <label>Teor de Fósforo a atingir (mg.dm³):</label>
                 <Input
-                  id=""
-                  name=""
-                  type="text"
+                    value={teorFosforo}
+                    onChange={(event) => setTeorFosforo(event.target.value)}
+                    type="text"
+                    onKeyPress={(event) => somenteNumero(event)}
                 />
               </InputField>
               <InputField className="w-300">
                 <label>Fonte de Fósforo a utilizar:</label>
                 <select
                   style={{ height: "30px" }}
+                  value={fonteFosforo}
+                  onChange={event => setFonteFosforo(event.target.value.split("-")[0].trim(""))}
                 >
                   {fontesDeFosforo.map((fonte, index) => {
-                    return <option key={index}>{fonte.indice} - {fonte.fonte}</option>
+                    return <option value={index + 1} key={index}>{fonte.indice} - {fonte.fonte}</option>
                   })}
                 </select>
-              </InputField>
-            </div>
-            <div className="row">
-              <InputField className="w-300">
-                <label>Quantidade a aplicar (kg/hectare):</label>
-                <Input
-                  id=""
-                  name=""
-                  type="text"
-                />
-              </InputField>
-              <InputField className="w-300">
-                <label>Custo (R$/h1):</label>
-                <Input
-                  placeholder="0,00"
-                  type="text"
-                  name=""
-                  id=""
-                />
               </InputField>
             </div>
 
@@ -92,6 +99,24 @@ export default function Fosforo() {
               </InputField>
             </div>
           </div>
+
+          <ButtonSubmit type="button" onClick={(event) => handleRequest(event)} value="Calcular"/>
+        </section>
+
+        <section>
+          { requestOk ?
+              <div className={styles.container}>
+                <div className="col">
+                  <p style={{fontWeight: "bold"}}>Quantidade a aplicar (kg/hectare):</p>
+                  <h3 style={{color: "green"}}>{quantidadeAplicar}</h3>
+                </div>
+                <div className="col">
+                  <p style={{fontWeight: "bold"}}>Eficiencia do nutriente: </p>
+                  <h3 style={{color: "brown"}}>{eficiencia}</h3>
+                </div>
+              </div>
+              : <></>
+          }
         </section>
       </main>
     </div>
